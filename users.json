@@ -1,0 +1,17 @@
+{
+    "usuario1@gmail.com": {
+        "nome": "Daniel",
+        "password": "senha1",
+        "valid_until": "2022-04-20"
+    },
+    "usuario2@gmail.com": {
+        "nome": "Daniel",
+        "password": "senha2",
+        "valid_until": "2022-04-20"
+    },
+    "usuario3@gmail.com": {
+        "nome": "Daniel",
+        "password": "senha3",
+        "valid_until": "2023-06-09"
+    }
+}
