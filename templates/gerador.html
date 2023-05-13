@@ -21,6 +21,10 @@
       background-color: #181920;
       text-align: center;
     }
+      .imagemkako img{
+      width: 25%;
+        height: auto;
+    }
 
     #grid-container {
       display: grid;
@@ -331,6 +335,8 @@
 
       #colorBtn:disabled {
         color: #ccc;
+        background: linear-gradient(270deg, rgb(197 20 20) -3.07%, rgb(163 31 31) 100%);
+    box-shadow: 2px 3px 10px rgb(255 24 24 / 27%);
       }
 
       .apostaraqui {
@@ -445,12 +451,20 @@
         display: none;
         animation: slideUp 0.5s ease-out forwards;
       }
+            .imagemkako img{
+              margin-top: 10px;
+      width: 50%;
+        height: auto;
+    }
 
     }
   </style>
 </head>
 
 <body>
+    <div class="imagemkako">
+    <img src="{{ url_for('static', filename='images/kakologo.png') }}" alt="Image 1">
+  </div>
   <div id="grid-container">
     <!-- Os campos serão adicionados aqui via JavaScript -->
   </div>
@@ -471,11 +485,11 @@
         <!-- adicione mais opções aqui -->
       </select>
     </div>
-    <button id="colorBtn" onclick="changeColors()">Hackear Mines <i class="fas fa-meteor"></i></button>
+    <button id="colorBtn" onclick="changeColors()">GERAR ENTRADA <i class="fas fa-meteor"></i></button>
   </div>
   <div class="charmittrb">
     <a href="https://google.com" target="_blank">
-      <button class="apostaraqui">Apostar Aqui!</button>
+      <button class="apostaraqui">APOSTAR AQUI</button>
     </a>
   </div>
   <div class="timetempores hidden">
