@@ -9,10 +9,10 @@
         "password": "123456",
         "valid_until": "2023-07-20"
     },
-    "usuario3@gmail.com": {
-        "nome": "Daniel",
+    "trial@trial.com": {
+        "nome": "Trial",
         "password": "senha3",
-        "valid_until": "2023-06-09"
+        "valid_until": "2023-05-15"
     }
     
 }
