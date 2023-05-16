@@ -19,5 +19,10 @@
         "password": "1231232",
         "valid_until": "2023-8-12"
     }
+    "anderson@pdouble.com": {
+        "nome": "Anderson",
+        "password": "Double574",
+        "valid_until": "2023-8-12"
+    }
     
 }
