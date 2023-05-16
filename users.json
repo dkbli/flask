@@ -13,6 +13,11 @@
         "nome": "Trial",
         "password": "senha3",
         "valid_until": "2023-05-15"
+    },
+    "cliente@84.com": {
+        "nome": "Indisponivel..",
+        "password": "1231232",
+        "valid_until": "2023-8-12"
     }
     
 }
