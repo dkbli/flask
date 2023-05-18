@@ -186,7 +186,7 @@ def admin_login():
         admin_password = request.form.get("admin_password")
 
         # Perform admin authentication logic here
-        if admin_username == 'admin' and admin_password == 'admin_password':
+        if admin_username == 'admiministrator' and admin_password == '@ae1444.234':
             session['admin_authenticated'] = True
             return redirect(url_for('home_admin'))
         else:
