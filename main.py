@@ -119,5 +119,121 @@ def logout():
 
 
 
+
+
+@app.route("/adminlogin", methods=["GET", "POST"])
+def admin_login():
+    if request.method == "POST":
+        admin_username = request.form.get("admin_username")
+        admin_password = request.form.get("admin_password")
+
+        # Perform admin authentication logic here
+        if admin_username == 'admin' and admin_password == 'admin_password':
+            session['admin_authenticated'] = True
+            return redirect(url_for('home_admin'))
+        else:
+            return render_template('admin_login.html', error='Invalid admin credentials.')
+
+    # Render the login form for GET requests
+    return render_template('admin_login.html')
+
+@app.route("/homeadmin", methods=["GET", "POST"])
+def home_admin():
+    if 'admin_authenticated' not in session or not session['admin_authenticated']:
+        return jsonify({'error': 'Admin not authenticated.'}), 401
+
+    conn, cursor = get_connection()
+    cursor.execute('SELECT * FROM users')
+    users = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    return render_template("home_admin.html", users=users)
+
+
+@app.route("/admin/users/create", methods=["POST"])
+def create_user():
+    if 'admin_authenticated' not in session or not session['admin_authenticated']:
+        return jsonify({'error': 'Admin not authenticated.'}), 401
+
+    email = request.form.get("email")
+    nome = request.form.get("nome")
+    password = request.form.get("password")
+    valid_until = request.form.get("valid_until")
+
+    conn, cursor = get_connection()
+    try:
+        cursor.execute("INSERT INTO users (email, nome, password, valid_until) VALUES (?, ?, ?, ?)",
+                       (email, nome, password, valid_until))
+        conn.commit()
+        return jsonify({'message': 'User created successfully.'})
+    except sqlite3.IntegrityError:
+        return jsonify({'error': 'User with the same email already exists.'}), 400
+    finally:
+        cursor.close()
+        conn.close()
+
+
+@app.route("/admin/users/<email>", methods=["GET"])
+def get_user(email):
+    if 'admin_authenticated' not in session or not session['admin_authenticated']:
+        return jsonify({'error': 'Admin not authenticated.'}), 401
+
+    conn, cursor = get_connection()
+    cursor.execute("SELECT * FROM users WHERE email = ?", (email,))
+    user = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+    if user:
+        user_data = {
+            'email': user[0],
+            'nome': user[1],
+            'password': user[2],
+            'valid_until': user[3]
+        }
+        return jsonify(user_data)
+    else:
+        return jsonify({'error': 'User not found.'}), 404
+
+
+@app.route("/admin/users/<email>/update", methods=["POST"])
+def update_user(email):
+    if 'admin_authenticated' not in session or not session['admin_authenticated']:
+        return jsonify({'error': 'Admin not authenticated.'}), 401
+
+    nome = request.form.get("nome")
+    password = request.form.get("password")
+    valid_until = request.form.get("valid_until")
+
+    conn, cursor = get_connection()
+    try:
+        cursor.execute("UPDATE users SET nome = ?, password = ?, valid_until = ? WHERE email = ?",
+                       (nome, password, valid_until, email))
+        conn.commit()
+        return jsonify({'message': 'User updated successfully.'})
+    except sqlite3.IntegrityError:
+        return jsonify({'error': 'User with the same email already exists.'}), 400
+    finally:
+        cursor.close()
+        conn.close()
+
+
+@app.route("/admin/users/<email>/delete", methods=["POST"])
+def delete_user(email):
+    if 'admin_authenticated' not in session or not session['admin_authenticated']:
+        return jsonify({'error': 'Admin not authenticated.'}), 401
+
+    conn, cursor = get_connection()
+    cursor.execute("DELETE FROM users WHERE email = ?", (email,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return jsonify({'message': 'User deleted successfully.'})
+
+
+
+
 if __name__ == '__main__':
     app.run(debug=True, port=os.getenv("PORT", default=5000))
